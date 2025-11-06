@@ -1,24 +1,19 @@
 ﻿using BepInEx;
-using Oculus.Platform.Models;
-using Photon.Pun;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace TTSGUI
 {
-    [BepInDependency("org.iidk.gorillatag.iimenu", "5.7.0")]
+    [BepInDependency("org.iidk.gorillatag.iimenu", "7.6.0")]
     [BepInPlugin(PluginInfo.GUID, PluginInfo.Name, PluginInfo.Version)]
     public class Manager : BaseUnityPlugin
     {
         void OnGUI()
         {
-            GUIStyle labelStyle = new GUIStyle(GUI.skin.label);
-            labelStyle.alignment = TextAnchor.MiddleCenter;
-            labelStyle.fontSize = 100;
+            GUIStyle labelStyle = new GUIStyle(GUI.skin.label)
+            {
+                alignment = TextAnchor.MiddleCenter,
+                fontSize = 100
+            };
             labelStyle.normal.textColor = Color.white;
 
             smoothAnim = barOpen ? Mathf.Lerp(smoothAnim, 0.5f, Time.deltaTime) : Mathf.Lerp(smoothAnim, 0f, Time.deltaTime);
@@ -44,7 +39,7 @@ namespace TTSGUI
                     barText = barText.Replace("\n", "");
                     GUI.FocusControl(null);
 
-                    iiMenu.Classes.CoroutineManager.RunCoroutine(iiMenu.Menu.Main.SpeakText(barText));
+                    iiMenu.Menu.Main.SpeakText(barText);
                     ToggleBar();
                 }
             }
@@ -55,10 +50,12 @@ namespace TTSGUI
             
             oldbs = down;
 
-            GUIStyle labelStyle2 = new GUIStyle(GUI.skin.label);
-            labelStyle2.alignment = TextAnchor.MiddleLeft;
-            labelStyle2.wordWrap = false;
-            labelStyle2.fontSize = 20;
+            GUIStyle labelStyle2 = new GUIStyle(GUI.skin.label)
+            {
+                alignment = TextAnchor.MiddleLeft,
+                wordWrap = false,
+                fontSize = 20
+            };
             labelStyle2.normal.textColor = Color.white;
         }
         public static bool barOpen = false;
@@ -66,7 +63,7 @@ namespace TTSGUI
         private static float smoothAnim = 0f;
         private static bool oldbs = false;
         private static Vector3 startPos = Vector3.zero;
-        Texture2D overlay = new Texture2D(1, 1);
+        private readonly Texture2D overlay = new Texture2D(1, 1);
 
         public static void ToggleBar()
         {
@@ -74,9 +71,7 @@ namespace TTSGUI
             barText = "";
             startPos = GorillaTagger.Instance.transform.position;
             if (!barOpen)
-            {
                 GUI.FocusControl(null);
-            }
         }
     }
 }
